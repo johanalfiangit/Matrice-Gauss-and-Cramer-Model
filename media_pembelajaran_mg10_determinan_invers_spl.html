@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matematika Teknik 1 | Mg. 10 – Determinan, Invers, Operasi Matriks dan SPL</title>
+<style>
+:root{
+ --yellow:#FFD43B;--yellow2:#FFF2B3;--red:#C92A2A;--red2:#FCE8E6;
+ --ink:#25313A;--muted:#61717B;--paper:#FFFCF2;--white:#FFFFFF;
+ --line:#E8DFBE;--green:#187A45;--blue:#2463A6;--shadow:0 8px 24px rgba(78,57,0,.08)
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:#FFF9E7;color:var(--ink);font:16px/1.58 Inter,Segoe UI,Arial,sans-serif}
+header{background:linear-gradient(120deg,#FFD43B,#FFE98A 72%,#FFF5C9);border-bottom:6px solid var(--red);padding:30px 20px}
+.hero,main,.nav-inner{max-width:1160px;margin:auto}
+.hero{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.kicker{font-size:.78rem;letter-spacing:1.3px;font-weight:900;color:#8C2020;text-transform:uppercase}
+h1{font-size:clamp(1.8rem,4vw,3.15rem);line-height:1.1;margin:8px 0;color:#2B250F}
+header p{max-width:760px;margin:10px 0 0;color:#51451F}
+.hero-chip{background:var(--red);color:#fff;padding:16px 20px;border-radius:18px;text-align:center;box-shadow:var(--shadow);font-weight:800}
+.hero-chip strong{display:block;font-size:1.8rem}
+nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.nav-inner{display:flex;gap:8px;padding:10px 16px;overflow:auto}
+nav a{white-space:nowrap;text-decoration:none;color:#5C4A14;font-weight:800;font-size:.88rem;background:var(--yellow2);padding:8px 12px;border-radius:999px}
+nav a:hover{background:var(--yellow)}
+main{padding:24px 18px 48px}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:17px}
+.card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:21px;box-shadow:var(--shadow);min-width:0}
+.s12{grid-column:span 12}.s8{grid-column:span 8}.s7{grid-column:span 7}.s6{grid-column:span 6}.s5{grid-column:span 5}.s4{grid-column:span 4}
+h2{font-size:1.25rem;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+h3{font-size:1.03rem;margin:17px 0 8px}
+.num{display:inline-grid;place-items:center;background:var(--yellow);border:2px solid #E3B900;border-radius:9px;padding:2px 9px;font-size:.85rem}
+p{margin:8px 0}.muted{color:var(--muted)}.small{font-size:.9rem}
+.callout{background:var(--yellow2);border-left:5px solid #D6A900;border-radius:10px;padding:12px 15px;margin:12px 0}
+.warn{background:var(--red2);border-left:5px solid var(--red);border-radius:10px;padding:12px 15px;margin:12px 0}
+.math{background:#FFFCF0;border:1px solid #E8DDAF;border-radius:12px;padding:13px 15px;margin:10px 0;overflow-x:auto;font-family:"Cambria Math",Cambria,serif;font-size:1.08rem}
+.center{text-align:center}.pill{display:inline-block;border-radius:99px;background:#EEF3F6;padding:4px 10px;font-weight:800;font-size:.8rem;color:#43525D}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.94rem}
+th,td{border:1px solid var(--line);padding:9px 11px;text-align:center}
+th{background:var(--yellow2)}td:first-child{text-align:left}
+.matrix{display:inline-grid;gap:5px;vertical-align:middle;padding:7px 12px;border-left:3px solid var(--red);border-right:3px solid var(--red);border-radius:6px;margin:3px}
+.m2{grid-template-columns:repeat(2,46px)}.m3{grid-template-columns:repeat(3,42px)}
+.matrix span{background:#FFF2B3;padding:6px 3px;border-radius:6px;text-align:center;font-weight:800}
+.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+label{font-weight:750;font-size:.9rem;display:block;margin-bottom:4px}
+input[type=number],select{width:100%;padding:10px 11px;border:2px solid #E5D9A9;border-radius:10px;background:#FFFEFA;color:var(--ink);font-size:1rem}
+input:focus,select:focus{outline:3px solid var(--yellow);border-color:#C99F00}
+button{border:0;border-radius:10px;padding:11px 15px;font-weight:850;cursor:pointer;margin:5px 5px 5px 0}
+button:hover{filter:brightness(.96);transform:translateY(-1px)}
+.primary{background:var(--red);color:#fff}.secondary{background:var(--yellow);color:#332800}.neutral{background:#EAF0F4;color:#263943}
+.output{background:#FFF9E7;border:1px dashed #D1B342;border-radius:12px;padding:13px;margin-top:12px;min-height:48px;overflow-wrap:anywhere}
+.good{color:var(--green);font-weight:850}.bad{color:var(--red);font-weight:850}
+.steps{display:grid;gap:9px}.step{display:flex;gap:10px;align-items:flex-start}.step b{background:var(--red);color:#fff;border-radius:50%;width:27px;height:27px;display:grid;place-items:center;flex:none}
+hr{border:0;border-top:1px solid var(--line);margin:18px 0}
+.quiz{background:#FFFCF0;border:1px solid var(--line);border-radius:12px;padding:13px;margin:10px 0}
+.quiz label{display:inline-flex;gap:7px;align-items:center;font-weight:500;margin:4px 12px 4px 0}
+footer{text-align:center;color:var(--muted);padding:22px;font-size:.85rem}
+@media(max-width:780px){.s8,.s7,.s6,.s5,.s4{grid-column:span 12}.card{padding:16px}.controls{grid-template-columns:1fr}.hero-chip{width:100%}}
+</style>
+</head>
+<body>
+<header>
+ <div class="hero">
+  <div>
+   <div class="kicker">Matematika Teknik 1 • Modul Minggu ke-10</div>
+   <h1>Determinan, Invers, Operasi Matriks, dan SPL</h1>
+   <p>Media pembelajaran interaktif untuk memahami operasi lanjutan matriks, menentukan determinan dan invers, serta menerapkannya dalam penyelesaian sistem persamaan linear.</p>
+  </div>
+  <div class="hero-chip">Mg. 10<strong>A × X = B</strong>Model matriks SPL</div>
+ </div>
+</header>
+<nav><div class="nav-inner">
+ <a href="#tujuan">Tujuan</a><a href="#operasi">Operasi matriks</a><a href="#determinan">Determinan</a><a href="#invers">Invers</a><a href="#spl">SPL</a><a href="#simulator">Simulator</a><a href="#latihan">Latihan</a>
+</div></nav>
+<main>
+<div class="grid">
+<section class="card s12" id="tujuan">
+ <h2><span class="num">01</span> Capaian pembelajaran</h2>
+ <p>Setelah mempelajari modul ini, mahasiswa diharapkan mampu:</p>
+ <div class="steps">
+  <div class="step"><b>1</b><div>Melakukan operasi lanjutan matriks, meliputi perkalian matriks, transpose, dan operasi skalar.</div></div>
+  <div class="step"><b>2</b><div>Menghitung determinan matriks persegi berordo 2 × 2 dan 3 × 3.</div></div>
+  <div class="step"><b>3</b><div>Menentukan invers matriks dengan metode rumus 2 × 2 dan metode eliminasi Gauss–Jordan.</div></div>
+  <div class="step"><b>4</b><div>Merepresentasikan sistem persamaan linear (SPL) ke dalam bentuk matriks <b>AX = B</b>.</div></div>
+  <div class="step"><b>5</b><div>Menyelesaikan SPL menggunakan invers matriks dan memeriksa kebenaran hasilnya.</div></div>
+ </div>
+ <div class="callout"><b>Alur materi:</b> operasi matriks → determinan → invers → representasi SPL → penyelesaian dan verifikasi.</div>
+</section>
+
+<section class="card s6" id="operasi">
+ <h2><span class="num">02</span> Operasi lanjutan matriks</h2>
+ <h3>A. Perkalian matriks</h3>
+ <div class="math center">A<sub>m×n</sub> B<sub>n×p</sub> = C<sub>m×p</sub></div>
+ <p>Jumlah kolom matriks pertama harus sama dengan jumlah baris matriks kedua. Ordo hasil diperoleh dari baris matriks pertama × kolom matriks kedua.</p>
+ <div class="math center">
+  [ 2&nbsp; 1 ; 3&nbsp; 2 ] [ 1&nbsp; 4 ; 2&nbsp; 1 ] =
+  [ 4&nbsp; 9 ; 7&nbsp; 14 ]
+ </div>
+ <h3>B. Transpose</h3>
+ <div class="math center">A = [ 4&nbsp; 2 ; 1&nbsp; 3 ] &nbsp; ⇒ &nbsp; A<sup>T</sup> = [ 4&nbsp; 1 ; 2&nbsp; 3 ]</div>
+ <p>Transpose menukar baris menjadi kolom. Jika A berordo m × n, maka A<sup>T</sup> berordo n × m.</p>
+ <h3>C. Perkalian skalar</h3>
+ <div class="math center">2A = 2[ 4&nbsp; 2 ; 1&nbsp; 3 ] = [ 8&nbsp; 4 ; 2&nbsp; 6 ]</div>
+ <div class="warn"><b>Perhatian:</b> perkalian matriks tidak dilakukan dengan mengalikan elemen yang posisinya sama. Gunakan perkalian baris-kolom.</div>
+</section>
+
+<section class="card s6">
+ <h2><span class="num">03</span> Contoh operasi dan dimensi</h2>
+ <p>Misalkan:</p>
+ <div class="math center">A = [ 2&nbsp; 1 ; 3&nbsp; 2 ] &nbsp;&nbsp; B = [ 1&nbsp; 4 ; 2&nbsp; 1 ]</div>
+ <p>Elemen baris pertama kolom pertama dari AB:</p>
+ <div class="math">c<sub>11</sub> = (2 × 1) + (1 × 2) = 4</div>
+ <p>Elemen baris pertama kolom kedua:</p>
+ <div class="math">c<sub>12</sub> = (2 × 4) + (1 × 1) = 9</div>
+ <p>Dengan cara yang sama diperoleh:</p>
+ <div class="math center">AB = [ 4&nbsp; 9 ; 7&nbsp; 14 ]</div>
+ <table><tr><th>Operasi</th><th>Ordo hasil</th></tr><tr><td>A<sub>2×2</sub> B<sub>2×2</sub></td><td>2 × 2</td></tr><tr><td>A<sub>2×3</sub> B<sub>3×1</sub></td><td>2 × 1</td></tr><tr><td>A<sup>T</sup>, jika A<sub>2×3</sub></td><td>3 × 2</td></tr></table>
+</section>
+
+<section class="card s6" id="determinan">
+ <h2><span class="num">04</span> Determinan matriks</h2>
+ <p>Determinan adalah nilai skalar yang dapat dihitung dari matriks persegi. Determinan digunakan, antara lain, untuk menguji apakah suatu matriks memiliki invers.</p>
+ <h3>A. Determinan 2 × 2</h3>
+ <div class="math center">A = [ a&nbsp; b ; c&nbsp; d ]</div>
+ <div class="math center"><b>det(A) = ad − bc</b></div>
+ <p>Contoh:</p>
+ <div class="math center">A = [ 4&nbsp; 2 ; 1&nbsp; 3 ]</div>
+ <div class="math">det(A) = (4 × 3) − (2 × 1) = 12 − 2 = <b>10</b></div>
+ <h3>B. Determinan 3 × 3 (ekspansi kofaktor baris pertama)</h3>
+ <div class="math center">A = [ a&nbsp; b&nbsp; c ; d&nbsp; e&nbsp; f ; g&nbsp; h&nbsp; i ]</div>
+ <div class="math">det(A) = a(ei − fh) − b(di − fg) + c(dh − eg)</div>
+ <p>Contoh:</p>
+ <div class="math center">A = [ 1&nbsp; 2&nbsp; 0 ; 0&nbsp; 1&nbsp; 1 ; 2&nbsp; 0&nbsp; 1 ]</div>
+ <div class="math">det(A) = 1(1×1 − 1×0) − 2(0×1 − 1×2) + 0 = 1 + 4 = <b>5</b></div>
+ <div class="callout"><b>Syarat invertibilitas:</b> matriks persegi A memiliki invers jika dan hanya jika det(A) ≠ 0.</div>
+</section>
+
+<section class="card s6" id="invers">
+ <h2><span class="num">05</span> Invers matriks</h2>
+ <p>Invers matriks A ditulis A<sup>−1</sup>. Invers memenuhi:</p>
+ <div class="math center">AA<sup>−1</sup> = A<sup>−1</sup>A = I</div>
+ <p>Untuk matriks 2 × 2:</p>
+ <div class="math center">A = [ a&nbsp; b ; c&nbsp; d ]</div>
+ <div class="math center">A<sup>−1</sup> = <span style="white-space:nowrap">1/(ad − bc)</span> [ d&nbsp; −b ; −c&nbsp; a ]</div>
+ <p>Rumus berlaku jika ad − bc ≠ 0.</p>
+ <h3>Contoh perhitungan</h3>
+ <div class="math">A = [ 4&nbsp; 2 ; 1&nbsp; 3 ], &nbsp; det(A) = 10</div>
+ <div class="math">A<sup>−1</sup> = 1/10 [ 3&nbsp; −2 ; −1&nbsp; 4 ]</div>
+ <div class="math center">= [ 0,3&nbsp; −0,2 ; −0,1&nbsp; 0,4 ]</div>
+ <h3>Invers matriks 3 × 3</h3>
+ <p>Dapat diperoleh melalui metode adjoin:</p>
+ <div class="math center">A<sup>−1</sup> = adj(A) / det(A), &nbsp; det(A) ≠ 0</div>
+ <p>atau dengan eliminasi Gauss–Jordan:</p>
+ <div class="math center">[ A | I ] &nbsp; → &nbsp; [ I | A<sup>−1</sup> ]</div>
+ <div class="warn">Matriks yang determinannya nol tidak memiliki invers. Jangan membagi dengan determinan nol.</div>
+</section>
+
+<section class="card s12" id="spl">
+ <h2><span class="num">06</span> Determinan dan invers terhadap SPL</h2>
+ <p>Sistem persamaan linear dapat ditulis dalam bentuk perkalian matriks:</p>
+ <div class="math center"><b>AX = B</b></div>
+ <table>
+  <tr><th>Matriks</th><th>Isi</th><th>Ordo</th></tr>
+  <tr><td>A</td><td>Matriks koefisien variabel</td><td>2 × 2</td></tr>
+  <tr><td>X</td><td>Vektor variabel tak diketahui</td><td>2 × 1</td></tr>
+  <tr><td>B</td><td>Vektor konstanta ruas kanan</td><td>2 × 1</td></tr>
+ </table>
+ <div class="math center">A<sub>2×2</sub> X<sub>2×1</sub> = B<sub>2×1</sub></div>
+ <h3>Studi kasus: menentukan jumlah dua jenis komponen</h3>
+ <p>Sebuah unit produksi membuat komponen X dan Y. Dua persamaan kebutuhan proses menghasilkan model:</p>
+ <div class="math center">4x + 2y = 18<br>x + 3y = 11</div>
+ <p>Susun ke bentuk matriks:</p>
+ <div class="math center">
+  [ 4&nbsp; 2 ; 1&nbsp; 3 ]<sub>2×2</sub>
+  [ x ; y ]<sub>2×1</sub>
+  =
+  [ 18 ; 11 ]<sub>2×1</sub>
+ </div>
+ <h3>Langkah penyelesaian menggunakan invers</h3>
+ <div class="steps">
+  <div class="step"><b>1</b><div>Identifikasi matriks koefisien A, vektor variabel X, dan vektor konstanta B.</div></div>
+  <div class="step"><b>2</b><div>Hitung determinan A: det(A) = (4 × 3) − (2 × 1) = 10. Karena 10 ≠ 0, invers A ada.</div></div>
+  <div class="step"><b>3</b><div>Tentukan invers: A<sup>−1</sup> = 1/10 [ 3 −2 ; −1 4 ].</div></div>
+  <div class="step"><b>4</b><div>Kalikan kedua sisi dengan A<sup>−1</sup>: A<sup>−1</sup>AX = A<sup>−1</sup>B.</div></div>
+  <div class="step"><b>5</b><div>Gunakan A<sup>−1</sup>A = I, sehingga X = A<sup>−1</sup>B.</div></div>
+  <div class="step"><b>6</b><div>Hitung hasil perkalian matriks dan verifikasi ke persamaan awal.</div></div>
+ </div>
+ <div class="math">X = 1/10 [ 3&nbsp; −2 ; −1&nbsp; 4 ] [ 18 ; 11 ]</div>
+ <div class="math">X = 1/10 [ (3×18) − (2×11) ; (−1×18) + (4×11) ]</div>
+ <div class="math">X = 1/10 [ 32 ; 26 ] = [ 3,2 ; 2,6 ]</div>
+ <div class="callout"><b>Hasil:</b> x = 3,2 dan y = 2,6.</div>
+ <h3>Verifikasi</h3>
+ <div class="math">Persamaan 1: 4(3,2) + 2(2,6) = 12,8 + 5,2 = 18 ✓</div>
+ <div class="math">Persamaan 2: 3,2 + 3(2,6) = 3,2 + 7,8 = 11 ✓</div>
+ <p class="good">Kedua persamaan terpenuhi, sehingga solusi benar.</p>
+</section>
+
+<section class="card s12" id="simulator">
+ <h2><span class="num">07</span> Simulator determinan, invers, dan SPL 2 × 2</h2>
+ <p>Ubah koefisien matriks A dan konstanta B. Simulator menghitung determinan, invers (jika tersedia), dan solusi SPL secara otomatis.</p>
+ <div class="controls">
+  <div><label for="a">Koefisien a (baris 1, kolom 1)</label><input type="number" id="a" value="4" step="any"></div>
+  <div><label for="b">Koefisien b (baris 1, kolom 2)</label><input type="number" id="b" value="2" step="any"></div>
+  <div><label for="c">Koefisien c (baris 2, kolom 1)</label><input type="number" id="c" value="1" step="any"></div>
+  <div><label for="d">Koefisien d (baris 2, kolom 2)</label><input type="number" id="d" value="3" step="any"></div>
+  <div><label for="e">Konstanta ruas kanan pertama</label><input type="number" id="e" value="18" step="any"></div>
+  <div><label for="f">Konstanta ruas kanan kedua</label><input type="number" id="f" value="11" step="any"></div>
+ </div>
+ <button class="primary" onclick="calculate()">Hitung determinan, invers, dan solusi</button>
+ <button class="secondary" onclick="resetCalc()">Reset contoh</button>
+ <div class="output" id="simResult" aria-live="polite">Masukkan koefisien, lalu tekan tombol hitung.</div>
+ <p class="small muted">Catatan: simulator ini menggunakan aritmetika numerik untuk SPL 2 × 2. Hasil desimal ditampilkan hingga empat angka di belakang koma.</p>
+</section>
+
+<section class="card s6" id="latihan">
+ <h2><span class="num">08</span> Latihan mandiri</h2>
+ <div class="quiz">
+  <p><b>1.</b> Jika A berordo 2 × 3 dan B berordo 3 × 4, maka ordo AB adalah ...</p>
+  <label><input type="radio" name="q1" value="a"> 2 × 4</label>
+  <label><input type="radio" name="q1" value="b"> 3 × 3</label>
+  <label><input type="radio" name="q1" value="c"> 4 × 2</label>
+  <div id="f1" class="small"></div>
+ </div>
+ <div class="quiz">
+  <p><b>2.</b> Determinan [ 2  1 ; 3  4 ] adalah ...</p>
+  <label><input type="radio" name="q2" value="a"> 5</label>
+  <label><input type="radio" name="q2" value="b"> 11</label>
+  <label><input type="radio" name="q2" value="c"> 8</label>
+  <div id="f2" class="small"></div>
+ </div>
+ <div class="quiz">
+  <p><b>3.</b> Jika det(A) = 0, maka ...</p>
+  <label><input type="radio" name="q3" value="a"> A pasti memiliki invers</label>
+  <label><input type="radio" name="q3" value="b"> A tidak memiliki invers</label>
+  <label><input type="radio" name="q3" value="c"> A pasti matriks identitas</label>
+  <div id="f3" class="small"></div>
+ </div>
+ <div class="quiz">
+  <p><b>4.</b> Jika AX = B dan A memiliki invers, maka X = ...</p>
+  <label><input type="radio" name="q4" value="a"> AB</label>
+  <label><input type="radio" name="q4" value="b"> BA</label>
+  <label><input type="radio" name="q4" value="c"> A<sup>−1</sup>B</label>
+  <div id="f4" class="small"></div>
+ </div>
+ <button class="primary" onclick="gradeQuiz()">Periksa jawaban</button><button class="neutral" onclick="resetQuiz()">Ulangi</button>
+ <div class="output" id="score">Skor akan tampil setelah jawaban diperiksa.</div>
+</section>
+<section class="card s6">
+ <h2><span class="num">09</span> Ringkasan konsep penting</h2>
+ <table><tr><th>Konsep</th><th>Rumus / ketentuan</th></tr>
+ <tr><td>Perkalian</td><td>(m × n)(n × p) = m × p</td></tr>
+ <tr><td>Transpose</td><td>(A<sub>m×n</sub>)<sup>T</sup> berordo n × m</td></tr>
+ <tr><td>Determinan 2 × 2</td><td>ad − bc</td></tr>
+ <tr><td>Determinan 3 × 3</td><td>Ekspansi kofaktor</td></tr>
+ <tr><td>Syarat invers</td><td>det(A) ≠ 0</td></tr>
+ <tr><td>Invers 2 × 2</td><td>(1/det A)[d −b; −c a]</td></tr>
+ <tr><td>SPL dengan invers</td><td>X = A<sup>−1</sup>B</td></tr></table>
+ <div class="warn"><b>Catatan matematis:</b> rumus X = A<sup>−1</sup>B hanya dapat digunakan jika A persegi dan tidak singular. Untuk matriks koefisien 2 × 2, syaratnya det(A) ≠ 0.</div>
+</section>
+</div>
+</main>
+<footer>Media pembelajaran Matematika Teknik 1 • Mg. 10 • Determinan, invers, operasi matriks, dan SPL</footer>
+<script>
+const ids=['a','b','c','d','e','f'];
+function val(id){return Number(document.getElementById(id).value)}
+function fmt(x){if(!Number.isFinite(x))return '—';let n=Math.abs(x)<1e-10?0:x;return Number(n.toFixed(4)).toString().replace('.',',')}
+function calculate(){
+ const [a,b,c,d,e,f]=ids.map(val),det=a*d-b*c;
+ let out=`<b>Matriks koefisien A:</b> [ ${fmt(a)} &nbsp; ${fmt(b)} ; ${fmt(c)} &nbsp; ${fmt(d)} ]<br><b>Vektor konstanta B:</b> [ ${fmt(e)} ; ${fmt(f)} ]<hr><b>Determinan:</b> det(A) = (${fmt(a)} × ${fmt(d)}) − (${fmt(b)} × ${fmt(c)}) = <b>${fmt(det)}</b><br>`;
+ if(Math.abs(det)<1e-10){out+=`<p class="bad">det(A) = 0. Matriks A singular dan tidak memiliki invers. Metode invers tidak dapat digunakan untuk memperoleh solusi tunggal.</p>`;}
+ else{
+  const ia=d/det,ib=-b/det,ic=-c/det,id=a/det;
+  const x=(d*e-b*f)/det,y=(a*f-c*e)/det;
+  out+=`<b>Invers A:</b><br>A<sup>−1</sup> = 1/${fmt(det)} [ ${fmt(d)} &nbsp; ${fmt(-b)} ; ${fmt(-c)} &nbsp; ${fmt(a)} ]<br>`;
+  out+=`<div class="math">A<sup>−1</sup> ≈ [ ${fmt(ia)} &nbsp; ${fmt(ib)} ; ${fmt(ic)} &nbsp; ${fmt(id)} ]</div>`;
+  out+=`<b>Solusi SPL:</b><br>X = A<sup>−1</sup>B<br><div class="math">x = ${fmt(x)}<br>y = ${fmt(y)}</div>`;
+  out+=`<b>Verifikasi substitusi:</b><br>Persamaan 1: ${fmt(a)}(${fmt(x)}) + ${fmt(b)}(${fmt(y)}) = ${fmt(a*x+b*y)} (target ${fmt(e)})<br>Persamaan 2: ${fmt(c)}(${fmt(x)}) + ${fmt(d)}(${fmt(y)}) = ${fmt(c*x+d*y)} (target ${fmt(f)})`;
+  out+=`<p class="good">Matriks memiliki invers dan sistem mempunyai solusi tunggal.</p>`;
+ }
+ document.getElementById('simResult').innerHTML=out;
+}
+function resetCalc(){[4,2,1,3,18,11].forEach((v,i)=>document.getElementById(ids[i]).value=v);calculate()}
+ids.forEach(id=>document.getElementById(id).addEventListener('input',()=>{}));
+const answers={q1:'a',q2:'a',q3:'b',q4:'c'};
+function gradeQuiz(){let score=0;Object.entries(answers).forEach(([q,a],i)=>{const chosen=document.querySelector(`input[name="${q}"]:checked`),ok=chosen&&chosen.value===a;if(ok)score++;const f=document.getElementById('f'+(i+1));f.textContent=ok?'Benar.':'Belum tepat. Periksa kembali konsep pada ringkasan.';f.className=ok?'good':'bad'});document.getElementById('score').innerHTML=`Skor: <b>${score}/4 (${score*25}%)</b>`}
+function resetQuiz(){document.querySelectorAll('input[type=radio]').forEach(x=>x.checked=false);for(let i=1;i<=4;i++){const f=document.getElementById('f'+i);f.textContent='';f.className='small'}document.getElementById('score').textContent='Skor akan tampil setelah jawaban diperiksa.'}
+calculate();
+</script>
+</body>
+</html>
